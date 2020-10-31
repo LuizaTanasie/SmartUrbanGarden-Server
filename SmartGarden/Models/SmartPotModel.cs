@@ -9,7 +9,7 @@ namespace SmartGarden.Models
     public class SmartPotModel
     {
         [JsonProperty(PropertyName = "pi_id")]
-        public string Id { get; set; }
+        public string PiId { get; set; }
         [JsonProperty(PropertyName = "temperature")]
         public decimal? Temperature { get; set; }
         [JsonProperty(PropertyName = "humidity")]
@@ -18,5 +18,7 @@ namespace SmartGarden.Models
         public decimal? SoilMoisture { get; set; }
         [JsonProperty(PropertyName = "is_raining")]
         public bool? IsRaining { get; set; }
+        [JsonProperty(PropertyName = "measured_at_time")]
+        public DateTime MeasuredAtTime { get; set; }
     }
 }

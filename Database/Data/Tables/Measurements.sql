@@ -5,6 +5,10 @@
     [SoilMoisturePercentage] DECIMAL (18, 2)  NULL,
     [IsRaining]              BIT              NULL,
     [DeviceID]               UNIQUEIDENTIFIER NOT NULL,
-    CONSTRAINT [PK_Measurements] PRIMARY KEY CLUSTERED ([ID] ASC)
+    [MeasuredAtTime]         DATETIME2 (7)    NOT NULL,
+    [ReceivedAtTime]         DATETIME2 (7)    NOT NULL,
+    CONSTRAINT [PK_Measurements] PRIMARY KEY NONCLUSTERED ([ID] ASC)
 );
+
+
 

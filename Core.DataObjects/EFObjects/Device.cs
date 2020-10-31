@@ -5,7 +5,7 @@ namespace Core.DataObjects.EFObjects
 {
     public partial class Device
     {
-        public Guid? Id { get; set; }
+        public Guid Id { get; set; }
         public string SerialNumber { get; set; }
         public DateTime? DateRegistered { get; set; }
     }

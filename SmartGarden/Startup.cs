@@ -2,16 +2,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DataAccess.DbContexts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-
+using SmartGarden.Controllers.Base;
 
 namespace SmartGarden
 {
@@ -27,7 +29,10 @@ namespace SmartGarden
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient<ControllerInitializer>();
+            services.AddTransient<SGContext>();
             services.AddControllers().AddNewtonsoftJson();
+            services.AddDbContext<SGContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

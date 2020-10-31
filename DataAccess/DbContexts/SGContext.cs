@@ -33,17 +33,23 @@ namespace DataAccess.DbContexts
         {
             modelBuilder.Entity<Device>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => e.Id)
+                    .IsClustered(false);
 
                 entity.ToTable("Devices", "Data");
 
-                entity.Property(e => e.Id).HasColumnName("ID");
+                entity.Property(e => e.Id)
+                    .HasColumnName("ID")
+                    .ValueGeneratedNever();
 
                 entity.Property(e => e.SerialNumber).HasMaxLength(50);
             });
 
             modelBuilder.Entity<Measurement>(entity =>
             {
+                entity.HasKey(e => e.Id)
+                    .IsClustered(false);
+
                 entity.ToTable("Measurements", "Data");
 
                 entity.Property(e => e.Id)
