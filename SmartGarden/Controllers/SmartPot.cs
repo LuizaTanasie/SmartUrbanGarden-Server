@@ -19,7 +19,7 @@ namespace SmartGarden.Controllers
         public IActionResult SaveSensorsData([FromBody]string model)
         {
             var data = JsonConvert.DeserializeObject<SmartPotModel>(model);
-            var dataStr = $"Server: {data.Temperature} {data.Humidity} {data.SoilMoisture:0.##}% {data.IsRaining}";
+            var dataStr = $"Server: {data.Id} {data.Temperature} {data.Humidity} {data.SoilMoisture:0.##}% {data.IsRaining}";
             return Ok(dataStr);
         }
 
