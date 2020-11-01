@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 using Core.DataObjects.EFObjects;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using SmartGarden.Controllers.Base;
 using SmartGarden.Models;
@@ -22,7 +19,7 @@ namespace SmartGarden.Controllers
         public IActionResult SaveSensorsData([FromBody]string model)
         {
             var smartPot = JsonConvert.DeserializeObject<SmartPotModel>(model);
-            var dataStr = $"Server: {smartPot.PiId} {smartPot.Temperature} {smartPot.Humidity} {smartPot.SoilMoisture:0.##}% {smartPot.IsRaining}";
+            var dataStr = $"Server: {smartPot.PiId} {smartPot.Temperature} {smartPot.Humidity} {smartPot.SoilMoisture:0.##}% {smartPot.Light:0.##}% {smartPot.IsRaining}";
 
             var device = Context.Devices.FirstOrDefault(d => d.SerialNumber == smartPot.PiId);
             if (device == null)
@@ -39,7 +36,8 @@ namespace SmartGarden.Controllers
                 IsRaining = smartPot.IsRaining,
                 SoilMoisturePercentage = smartPot.SoilMoisture,
                 ReceivedAtTime = DateTime.UtcNow,
-                MeasuredAtTime = smartPot.MeasuredAtTime
+                MeasuredAtTime = smartPot.MeasuredAtTime,
+                LightPercentage = smartPot.Light
             });
             Context.SaveChanges();
             

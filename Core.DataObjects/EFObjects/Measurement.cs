@@ -13,5 +13,6 @@ namespace Core.DataObjects.EFObjects
         public Guid DeviceId { get; set; }
         public DateTime MeasuredAtTime { get; set; }
         public DateTime ReceivedAtTime { get; set; }
+        public decimal? LightPercentage { get; set; }
     }
 }

@@ -47,9 +47,6 @@ namespace DataAccess.DbContexts
 
             modelBuilder.Entity<Measurement>(entity =>
             {
-                entity.HasKey(e => e.Id)
-                    .IsClustered(false);
-
                 entity.ToTable("Measurements", "Data");
 
                 entity.Property(e => e.Id)
@@ -59,6 +56,8 @@ namespace DataAccess.DbContexts
                 entity.Property(e => e.DeviceId).HasColumnName("DeviceID");
 
                 entity.Property(e => e.Humidity).HasColumnType("decimal(18, 2)");
+
+                entity.Property(e => e.LightPercentage).HasColumnType("decimal(18, 2)");
 
                 entity.Property(e => e.SoilMoisturePercentage).HasColumnType("decimal(18, 2)");
 
