@@ -45,9 +45,16 @@ namespace SmartGarden.Controllers
         }
 
         [HttpGet]
-        public IActionResult Test()
+        public IActionResult GetLastMeasurement(Guid deviceId)
         {
-            return Ok("test");
+            var measurement = Context.Measurements.OrderBy(m => m.MeasuredAtTime).FirstOrDefault(m => m.DeviceId == deviceId);
+            if (measurement != null)
+            {
+                return Ok(SmartPotModel.FromMeasurement(measurement));
+            }
+            else{
+                return Error("No measurements.");
+            }
         }
     }
 }

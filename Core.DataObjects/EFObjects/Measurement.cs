@@ -14,5 +14,7 @@ namespace Core.DataObjects.EFObjects
         public DateTime MeasuredAtTime { get; set; }
         public DateTime ReceivedAtTime { get; set; }
         public decimal? LightPercentage { get; set; }
+
+        public virtual Device Device { get; set; }
     }
 }

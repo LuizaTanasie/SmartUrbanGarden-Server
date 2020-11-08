@@ -8,8 +8,11 @@
     [MeasuredAtTime]         DATETIME2 (7)    NOT NULL,
     [ReceivedAtTime]         DATETIME2 (7)    NOT NULL,
     [LightPercentage]        DECIMAL (18, 2)  NULL,
-    CONSTRAINT [PK_Measurements] PRIMARY KEY NONCLUSTERED ([ID] ASC)
+    CONSTRAINT [PK_Measurements] PRIMARY KEY CLUSTERED ([ID] ASC),
+    CONSTRAINT [FK_Measurements_Devices] FOREIGN KEY ([DeviceID]) REFERENCES [Data].[Devices] ([ID])
 );
+
+
 
 
 

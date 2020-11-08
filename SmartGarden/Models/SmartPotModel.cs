@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Core.DataObjects.EFObjects;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,5 +23,18 @@ namespace SmartGarden.Models
         public bool? IsRaining { get; set; }
         [JsonProperty(PropertyName = "measured_at_time")]
         public DateTime MeasuredAtTime { get; set; }
+
+        public static SmartPotModel FromMeasurement(Measurement measurement)
+        {
+            return new SmartPotModel
+            {
+                Humidity = measurement.Humidity,
+                IsRaining = measurement.IsRaining,
+                Light = measurement.LightPercentage,
+                MeasuredAtTime = measurement.MeasuredAtTime,
+                SoilMoisture = measurement.SoilMoisturePercentage,
+                Temperature = measurement.Temperature
+            };
+        }
     }
 }

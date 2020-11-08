@@ -33,9 +33,6 @@ namespace DataAccess.DbContexts
         {
             modelBuilder.Entity<Device>(entity =>
             {
-                entity.HasKey(e => e.Id)
-                    .IsClustered(false);
-
                 entity.ToTable("Devices", "Data");
 
                 entity.Property(e => e.Id)
@@ -62,6 +59,12 @@ namespace DataAccess.DbContexts
                 entity.Property(e => e.SoilMoisturePercentage).HasColumnType("decimal(18, 2)");
 
                 entity.Property(e => e.Temperature).HasColumnType("decimal(18, 2)");
+
+                entity.HasOne(d => d.Device)
+                    .WithMany(p => p.Measurements)
+                    .HasForeignKey(d => d.DeviceId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Measurements_Devices");
             });
 
             OnModelCreatingPartial(modelBuilder);
