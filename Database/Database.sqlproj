@@ -59,6 +59,8 @@
     <Folder Include="Data\" />
     <Folder Include="Data\Tables\" />
     <Folder Include="Security\" />
+    <Folder Include="Catalogs\" />
+    <Folder Include="Catalogs\Tables\" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="CatalogsData.sql" />
@@ -67,6 +69,8 @@
     <Build Include="Data\Tables\Devices.sql" />
     <Build Include="Data\Tables\Measurements.sql" />
     <Build Include="Security\Data.sql" />
+    <Build Include="Catalogs\Tables\MeasurementIdealAmounts.sql" />
+    <Build Include="Security\Catalogs.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CompareLocal.scmp" />

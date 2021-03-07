@@ -3,6 +3,7 @@ using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Sg_functions.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -23,6 +24,7 @@ namespace Sg_functions
                  , options => options.EnableRetryOnFailure());
              });
             builder.Services.AddTransient<SGContext>();
+            builder.Services.AddTransient<PlantCareHelper>();
 
         }
     }

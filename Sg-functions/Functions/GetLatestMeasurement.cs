@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
+using Sg_functions.Helpers;
 using Sg_functions.Models;
 using System;
 using System.Collections.Generic;
@@ -14,10 +15,12 @@ namespace Sg_functions.Functions
 {
     public class GetLatestMeasurement
     {
-        private SGContext context;
+        private readonly SGContext context;
+        private readonly PlantCareHelper plantCareHelper;
         public GetLatestMeasurement(SGContext context)
         {
             this.context = context;
+            this.plantCareHelper = new PlantCareHelper(context);
         }
 
         [FunctionName("GetLatestMeasurement")]
@@ -29,7 +32,9 @@ namespace Sg_functions.Functions
             var measurement = context.Measurements.OrderByDescending(m => m.MeasuredAtTime).FirstOrDefault(m => m.DeviceId == deviceId);
             if (measurement != null)
             {
-                return new OkObjectResult(MeasurementWithWarningsModel.FromMeasurement(measurement));
+                var measurementModel = MeasurementModel.FromMeasurement(measurement);
+                measurementModel.Warnings = plantCareHelper.GetWarnings(deviceId);
+                return new OkObjectResult(measurementModel);
             }
             else
             {
