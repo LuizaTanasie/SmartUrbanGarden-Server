@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.EntityFrameworkCore;
 using Sg_functions.Helpers;
 using Sg_functions.Models;
 using System;
@@ -29,7 +30,10 @@ namespace Sg_functions.Functions
         {
             Guid deviceId = Guid.Parse(req.Query["DeviceId"]);
 
-            var measurement = context.Measurements.OrderByDescending(m => m.MeasuredAtTime).FirstOrDefault(m => m.DeviceId == deviceId);
+            var measurement = context.Measurements
+                .Include(m => m.Device)
+                .OrderByDescending(m => m.MeasuredAtTime)
+                .FirstOrDefault(m => m.DeviceId == deviceId);
             if (measurement != null)
             {
                 var measurementModel = MeasurementModel.FromMeasurement(measurement);
@@ -38,7 +42,7 @@ namespace Sg_functions.Functions
             }
             else
             {
-                return new BadRequestObjectResult("No measurements.");
+                return new BadRequestObjectResult("No measurements yet.");
             }
         }
     }

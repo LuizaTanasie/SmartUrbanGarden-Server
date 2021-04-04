@@ -35,8 +35,8 @@ namespace Sg_functions.Helpers
 
         private string GetTemperatureWarning(decimal? temperature, int? idealTemperatureId)
         {
-            var tooColdMessage = "Your plant is too cold.";
-            var tooHotMessage = "Your plant is too hot.";
+            var tooColdMessage = "I'm too cold.";
+            var tooHotMessage = "I'm too warm.";
             if (temperature < 10)
             {
                 return tooColdMessage;
@@ -144,11 +144,11 @@ namespace Sg_functions.Helpers
         private string GetLightWarning(Device device, int? howMuchLight)
         {
             var lightAverage = device.Measurements
-                .Where(m => m.MeasuredAtTime > DateTime.Now.AddDays(-1)
+                .Where(m => m.MeasuredAtTime < DateTime.Now.AddDays(-3)
                             && m.MeasuredAtTime.TimeOfDay > new TimeSpan(6, 00, 00)
                             && m.MeasuredAtTime.TimeOfDay < new TimeSpan(20, 00, 00)).Select(m => m.LightPercentage).Average();
-            var lightTooLow = "The amount of light your plant received in the past day was below average. Make sure your plant gets enough light.";
-            var lightTooStrong = "The light your plant received in the past day was too strong. Make sure your plant can handle direct sunlight.";
+            var lightTooLow = "The amount of light I received in the past 3 days wasn't enough. I need more light.";
+            var lightTooStrong = "The amount of light I received in the past 3 days was too strong. Make sure I can handle direct sunlight.";
             switch (howMuchLight)
             {
                 case (int)MeasurementIdealAmounts.Low:
