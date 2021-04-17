@@ -118,9 +118,18 @@ namespace Sg_functions.Helpers
 
         private string GetSoilMoistureWarning(decimal? soilMoisture, int? howMuchWater)
         {
-            var soilMoistureTooLow = "The soil moisture is too low.";
+            var soilMoistureTooLow = "I need water.";
+            var soilMoistureTooHigh = "I received too much water.";
             switch (howMuchWater)
             {
+                case (int)MeasurementIdealAmounts.Low:
+                    {
+                        if (soilMoisture > 70)
+                        {
+                            return soilMoistureTooHigh;
+                        }
+                        break;
+                    }
                 case (int)MeasurementIdealAmounts.Moderate:
                     {
                         if (soilMoisture < 30)
@@ -131,7 +140,7 @@ namespace Sg_functions.Helpers
                     }
                 case (int)MeasurementIdealAmounts.High:
                     {
-                        if (soilMoisture < 60)
+                        if (soilMoisture < 50)
                         {
                             return soilMoistureTooLow;
                         }

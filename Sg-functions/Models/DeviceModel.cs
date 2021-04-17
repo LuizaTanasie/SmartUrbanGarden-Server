@@ -10,15 +10,18 @@ namespace Sg_functions.Models
         public Guid Id { get; set; }
         public string SerialNumber { get; set; }
         [Required]
-        public int HowMuchWater { get; set; }
+        public int? HowMuchWater { get; set; }
         [Required]
-        public int HowMuchLight { get; set; }
+        public int? HowMuchLight { get; set; }
         [Required]
-        public int HowMuchHumidity { get; set; }
+        public int? HowMuchHumidity { get; set; }
         [Required]
-        public int IdealTemperature { get; set; }
+        public int? IdealTemperature { get; set; }
         public string PlantName { get; set; }
         [Required]
         public string PlantSpecies { get; set; }
+        [EmailAddress]
+        public string Email { get; set; }
+        public List<string> ConfiguredEmails { get; set; }
     }
 }

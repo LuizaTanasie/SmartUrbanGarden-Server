@@ -3,15 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30523.141
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartGarden", "SmartGarden\SmartGarden.csproj", "{DA65BA69-9C75-47B1-97DC-C72D89B6C247}"
-EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Database", "Database\Database.sqlproj", "{BF485C91-2579-4013-838A-2F32C65C36E4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "DataAccess\DataAccess.csproj", "{FC35E917-B9A0-4911-A21C-E7B5B1B66321}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.DataObjects", "Core.DataObjects\Core.DataObjects.csproj", "{13C9AD30-B358-4713-B8E6-7C986CB484BD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sg-functions", "Sg-functions\Sg-functions.csproj", "{F8BFF285-2B2D-4D11-A70B-70DF5AFA306E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sg-functions", "Sg-functions\Sg-functions.csproj", "{F8BFF285-2B2D-4D11-A70B-70DF5AFA306E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,10 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{DA65BA69-9C75-47B1-97DC-C72D89B6C247}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DA65BA69-9C75-47B1-97DC-C72D89B6C247}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DA65BA69-9C75-47B1-97DC-C72D89B6C247}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DA65BA69-9C75-47B1-97DC-C72D89B6C247}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BF485C91-2579-4013-838A-2F32C65C36E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BF485C91-2579-4013-838A-2F32C65C36E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BF485C91-2579-4013-838A-2F32C65C36E4}.Debug|Any CPU.Deploy.0 = Debug|Any CPU

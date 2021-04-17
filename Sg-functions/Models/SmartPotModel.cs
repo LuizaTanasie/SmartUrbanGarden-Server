@@ -15,8 +15,6 @@ namespace Sg_functions.Models
         public decimal? SoilMoisture { get; set; }
         [JsonProperty(PropertyName = "light")]
         public decimal? Light { get; set; }
-        [JsonProperty(PropertyName = "is_raining")]
-        public bool? IsRaining { get; set; }
         [JsonProperty(PropertyName = "measured_at_time")]
         public DateTime MeasuredAtTime { get; set; }
     }

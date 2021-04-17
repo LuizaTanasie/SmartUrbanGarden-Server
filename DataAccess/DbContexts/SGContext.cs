@@ -18,6 +18,7 @@ namespace DataAccess.DbContexts
         }
 
         public virtual DbSet<Device> Devices { get; set; }
+        public virtual DbSet<DeviceUser> DeviceUsers { get; set; }
         public virtual DbSet<Measurement> Measurements { get; set; }
         public virtual DbSet<MeasurementIdealAmount> MeasurementIdealAmounts { get; set; }
 
@@ -73,6 +74,24 @@ namespace DataAccess.DbContexts
                     .WithMany(p => p.DeviceIdealTemperatures)
                     .HasForeignKey(d => d.IdealTemperatureId)
                     .HasConstraintName("FK_Devices_MeasurementIdealAmounts3");
+            });
+
+            modelBuilder.Entity<DeviceUser>(entity =>
+            {
+                entity.HasKey(e => new { e.DeviceId, e.Email })
+                    .IsClustered(false);
+
+                entity.ToTable("DeviceUsers", "Data");
+
+                entity.Property(e => e.DeviceId).HasColumnName("DeviceID");
+
+                entity.Property(e => e.Email).HasMaxLength(100);
+
+                entity.HasOne(d => d.Device)
+                    .WithMany(p => p.DeviceUsers)
+                    .HasForeignKey(d => d.DeviceId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_DeviceUsers_Devices");
             });
 
             modelBuilder.Entity<Measurement>(entity =>

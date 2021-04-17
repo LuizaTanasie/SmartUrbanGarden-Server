@@ -7,6 +7,7 @@ namespace Core.DataObjects.EFObjects
     {
         public Device()
         {
+            DeviceUsers = new HashSet<DeviceUser>();
             Measurements = new HashSet<Measurement>();
         }
 
@@ -24,6 +25,7 @@ namespace Core.DataObjects.EFObjects
         public virtual MeasurementIdealAmount HowMuchLight { get; set; }
         public virtual MeasurementIdealAmount HowMuchWater { get; set; }
         public virtual MeasurementIdealAmount IdealTemperature { get; set; }
+        public virtual ICollection<DeviceUser> DeviceUsers { get; set; }
         public virtual ICollection<Measurement> Measurements { get; set; }
     }
 }

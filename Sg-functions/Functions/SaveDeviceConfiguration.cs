@@ -9,19 +9,21 @@ using System.Linq;
 using System.IO;
 using Newtonsoft.Json;
 using Sg_functions.Models;
+using Microsoft.EntityFrameworkCore;
+using Core.DataObjects.EFObjects;
 
 namespace Sg_functions.Functions
 {
 
-    public class RegisterDevice
+    public class SaveDeviceConfiguration
     {
         private SGContext context;
-        public RegisterDevice(SGContext context)
+        public SaveDeviceConfiguration(SGContext context)
         {
             this.context = context;
         }
 
-        [FunctionName("RegisterDevice")]
+        [FunctionName("SaveDeviceConfiguration")]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req)
         {
@@ -30,7 +32,7 @@ namespace Sg_functions.Functions
 
             var deviceModel = JsonConvert.DeserializeObject<DeviceModel>(requestBody);
 
-            var device = context.Devices.FirstOrDefault(d => d.SerialNumber == deviceModel.SerialNumber);
+            var device = context.Devices.Include(d => d.DeviceUsers).FirstOrDefault(d => d.Id == deviceModel.Id);
             if (device == null)
             {
                 return new BadRequestObjectResult("No device found.");
@@ -41,6 +43,13 @@ namespace Sg_functions.Functions
             device.HowMuchLightId = deviceModel.HowMuchLight;
             device.HowMuchWaterId = deviceModel.HowMuchWater;
             device.IdealTemperatureId = deviceModel.IdealTemperature;
+            if (!string.IsNullOrEmpty(deviceModel.Email))
+            {
+                if (!device.DeviceUsers.Any(du => du.Email == deviceModel.Email))
+                {
+                    device.DeviceUsers.Add(new DeviceUser { Email = deviceModel.Email });
+                }
+            }
             context.SaveChanges();
             return new OkObjectResult(device.Id);
         }

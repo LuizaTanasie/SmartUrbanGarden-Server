@@ -10,5 +10,16 @@ namespace Sg_functions.Models
         public string HumidityWarning { get; set; }
         public string SoilMoistureWarning { get; set; }
         public string LightWarning { get; set; }
+
+        public bool HasAnyWarning
+        {
+            get
+            {
+                return !string.IsNullOrEmpty(LightWarning)
+                    || !string.IsNullOrEmpty(TemperatureWarning)
+                    || !string.IsNullOrEmpty(SoilMoistureWarning)
+                    || !string.IsNullOrEmpty(LightWarning);
+            }
+        }
     }
 }

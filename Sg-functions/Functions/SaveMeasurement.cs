@@ -11,15 +11,19 @@ using DataAccess.DbContexts;
 using System.Linq;
 using Newtonsoft.Json;
 using System.Text;
+using Sg_functions.Helpers;
 
 namespace Sg_functions.Functions
 {
     public class SaveMeasurement
     {
         private SGContext context;
+        private readonly PlantCareHelper plantCareHelper;
+
         public SaveMeasurement(SGContext context)
         {
             this.context = context;
+            this.plantCareHelper = new PlantCareHelper(context);
         }
 
         [FunctionName("SaveMeasurement")]
@@ -30,7 +34,7 @@ namespace Sg_functions.Functions
             string requestBody = await new StreamReader(req.Body, Encoding.UTF8).ReadToEndAsync();
 
             var smartPot = JsonConvert.DeserializeObject<SmartPotModel>(requestBody);
-            var dataStr = $"Registered: {smartPot.PiId} {smartPot.Temperature} {smartPot.Humidity} {smartPot.SoilMoisture:0.##}% {smartPot.Light:0.##}% {smartPot.IsRaining}";
+            var dataStr = $"Registered: {smartPot.PiId} {smartPot.Temperature} {smartPot.Humidity} {smartPot.SoilMoisture:0.##}% {smartPot.Light:0.##}%";
 
             var device = context.Devices.FirstOrDefault(d => d.SerialNumber == smartPot.PiId);
             if (device == null)
@@ -44,13 +48,18 @@ namespace Sg_functions.Functions
                 DeviceId = device.Id,
                 Humidity = smartPot.Humidity,
                 Temperature = smartPot.Temperature,
-                IsRaining = smartPot.IsRaining,
                 SoilMoisturePercentage = smartPot.SoilMoisture,
                 ReceivedAtTime = DateTime.UtcNow,
                 MeasuredAtTime = smartPot.MeasuredAtTime,
                 LightPercentage = smartPot.Light
             });
             context.SaveChanges();
+
+            var warnings = plantCareHelper.GetWarnings(device.Id);
+            if (warnings.HasAnyWarning)
+            {
+                
+            }
 
             return new OkObjectResult(dataStr);
         }

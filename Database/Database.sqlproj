@@ -71,6 +71,7 @@
     <Build Include="Security\Data.sql" />
     <Build Include="Catalogs\Tables\MeasurementIdealAmounts.sql" />
     <Build Include="Security\Catalogs.sql" />
+    <Build Include="Data\Tables\DeviceUsers.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CompareLocal.scmp" />
