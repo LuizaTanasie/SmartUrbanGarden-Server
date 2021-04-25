@@ -17,36 +17,39 @@ namespace Sg_functions.Helpers
         {
             this.context = context;
         }
-        public PlantCareWarningModel GetWarnings(Guid deviceId)
+        public List<PlantCareWarningModel> GetWarnings(Guid deviceId)
         {
             var device = context.Devices.Include(d => d.Measurements).FirstOrDefault(d => d.Id == deviceId);
             var latestMeasurement = device.Measurements
                 .OrderByDescending(m => m.MeasuredAtTime)
                 .FirstOrDefault();
+            var warnings = new List<PlantCareWarningModel>();
 
-            return new PlantCareWarningModel
-            {
-                TemperatureWarning = GetTemperatureWarning(latestMeasurement.Temperature, device.IdealTemperatureId),
-                HumidityWarning = GetHumidityWarning(latestMeasurement.Humidity, device.HowMuchHumidityId),
-                SoilMoistureWarning = GetSoilMoistureWarning(latestMeasurement.SoilMoisturePercentage, device.HowMuchWaterId),
-                LightWarning = GetLightWarning(device, device.HowMuchLightId),
-            };
+            GetTemperatureWarning(latestMeasurement.Temperature, device.IdealTemperatureId, warnings);
+            GetHumidityWarning(latestMeasurement.Humidity, device.HowMuchHumidityId, warnings);
+            GetSoilMoistureWarning(latestMeasurement.SoilMoisturePercentage, device.HowMuchWaterId, warnings);
+            GetLightWarning(device, device.HowMuchLightId, warnings);
+
+            return warnings;
+            
         }
 
-        private string GetTemperatureWarning(decimal? temperature, int? idealTemperatureId)
+        private void GetTemperatureWarning(decimal? temperature, int? idealTemperatureId, List<PlantCareWarningModel> warnings)
         {
             var tooColdMessage = "I'm too cold.";
             var tooHotMessage = "I'm too warm.";
+            var warning = string.Empty;
             if (temperature < 10)
             {
-                return tooColdMessage;
+                warning = tooColdMessage;
             }
             switch (idealTemperatureId)
             {
-                case (int)MeasurementIdealAmounts.Low: {
+                case (int)MeasurementIdealAmounts.Low:
+                    {
                         if (temperature > 20)
                         {
-                            return tooHotMessage;
+                            warning = tooHotMessage;
                         }
                         break;
                     }
@@ -54,11 +57,11 @@ namespace Sg_functions.Helpers
                     {
                         if (temperature < 18)
                         {
-                            return tooColdMessage;
+                            warning = tooColdMessage;
                         }
                         if (temperature > 30)
                         {
-                            return tooHotMessage;
+                            warning = tooHotMessage;
                         }
                         break;
                     }
@@ -66,21 +69,25 @@ namespace Sg_functions.Helpers
                     {
                         if (temperature < 28)
                         {
-                            return tooColdMessage;
+                            warning = tooColdMessage;
                         }
                         break;
                     }
             }
-            return null;
+            if (!string.IsNullOrEmpty(warning))
+            {
+                warnings.Add(new PlantCareWarningModel { Message = warning , WarningTypeId = (int)WarningTypes.TemperatureWarning});
+            }
         }
 
-        private string GetHumidityWarning(decimal? humidityPercentage, int? howMuchHumidity)
+        private void GetHumidityWarning(decimal? humidityPercentage, int? howMuchHumidity, List<PlantCareWarningModel> warnings)
         {
             var humidityTooHigh = "The humidity is too high.";
             var humidityTooLow = "The humidity is too low.";
+            var warning = string.Empty;
             if (humidityPercentage < 10)
             {
-                return humidityTooLow;
+                warning = humidityTooLow;
             }
             switch (howMuchHumidity)
             {
@@ -88,7 +95,7 @@ namespace Sg_functions.Helpers
                     {
                         if (humidityPercentage > 40)
                         {
-                            return humidityTooHigh;
+                            warning = humidityTooHigh;
                         }
                         break;
                     }
@@ -96,11 +103,11 @@ namespace Sg_functions.Helpers
                     {
                         if (humidityPercentage < 40)
                         {
-                            return humidityTooLow;
+                            warning = humidityTooLow;
                         }
                         if (humidityPercentage > 70)
                         {
-                            return humidityTooHigh;
+                            warning = humidityTooHigh;
                         }
                         break;
                     }
@@ -108,25 +115,29 @@ namespace Sg_functions.Helpers
                     {
                         if (humidityPercentage < 65)
                         {
-                            return humidityTooLow;
+                            warning = humidityTooLow;
                         }
                         break;
                     }
             }
-            return null;
+            if (!string.IsNullOrEmpty(warning))
+            {
+                warnings.Add(new PlantCareWarningModel { Message = warning, WarningTypeId = (int)WarningTypes.HumidityWarning });
+            }
         }
 
-        private string GetSoilMoistureWarning(decimal? soilMoisture, int? howMuchWater)
+        private void GetSoilMoistureWarning(decimal? soilMoisture, int? howMuchWater, List<PlantCareWarningModel> warnings)
         {
             var soilMoistureTooLow = "I need water.";
             var soilMoistureTooHigh = "I received too much water.";
+            var warning = string.Empty;
             switch (howMuchWater)
             {
                 case (int)MeasurementIdealAmounts.Low:
                     {
                         if (soilMoisture > 70)
                         {
-                            return soilMoistureTooHigh;
+                            warning = soilMoistureTooHigh;
                         }
                         break;
                     }
@@ -134,7 +145,7 @@ namespace Sg_functions.Helpers
                     {
                         if (soilMoisture < 30)
                         {
-                            return soilMoistureTooLow;
+                            warning = soilMoistureTooLow;
                         }
                         break;
                     }
@@ -142,29 +153,33 @@ namespace Sg_functions.Helpers
                     {
                         if (soilMoisture < 50)
                         {
-                            return soilMoistureTooLow;
+                            warning = soilMoistureTooLow;
                         }
                         break;
                     }
             }
-            return null;
+            if (!string.IsNullOrEmpty(warning))
+            {
+                warnings.Add(new PlantCareWarningModel { Message = warning, WarningTypeId = (int)WarningTypes.SoilWarning });
+            }
         }
 
-        private string GetLightWarning(Device device, int? howMuchLight)
+        private void GetLightWarning(Device device, int? howMuchLight, List<PlantCareWarningModel> warnings)
         {
             var lightAverage = device.Measurements
-                .Where(m => m.MeasuredAtTime < DateTime.Now.AddDays(-3)
+                .Where(m => m.MeasuredAtTime < DateTime.Now.AddDays(-1)
                             && m.MeasuredAtTime.TimeOfDay > new TimeSpan(6, 00, 00)
                             && m.MeasuredAtTime.TimeOfDay < new TimeSpan(20, 00, 00)).Select(m => m.LightPercentage).Average();
-            var lightTooLow = "The amount of light I received in the past 3 days wasn't enough. I need more light.";
-            var lightTooStrong = "The amount of light I received in the past 3 days was too strong. Make sure I can handle direct sunlight.";
+            var lightTooLow = "The amount of light I received in the past day wasn't enough. I need more light.";
+            var lightTooStrong = "The amount of light I received in the past day was too strong. Make sure I can handle direct sunlight.";
+            var warning = string.Empty;
             switch (howMuchLight)
             {
                 case (int)MeasurementIdealAmounts.Low:
                     {
                         if (lightAverage > 70)
                         {
-                            return lightTooStrong;
+                            warning = lightTooStrong;
                         }
                         break;
                     }
@@ -172,7 +187,7 @@ namespace Sg_functions.Helpers
                     {
                         if (lightAverage < 50)
                         {
-                            return lightTooLow;
+                            warning = lightTooLow;
                         }
                         break;
                     }
@@ -180,12 +195,15 @@ namespace Sg_functions.Helpers
                     {
                         if (lightAverage < 80)
                         {
-                            return lightTooLow;
+                            warning = lightTooLow;
                         }
                         break;
                     }
             }
-            return null;
+            if (!string.IsNullOrEmpty(warning))
+            {
+                warnings.Add(new PlantCareWarningModel { Message = warning, WarningTypeId = (int)WarningTypes.LightWarning });
+            }
         }
     }
 }

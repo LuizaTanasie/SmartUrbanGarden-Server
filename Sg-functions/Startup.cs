@@ -7,7 +7,7 @@ using Sg_functions.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Text;
-
+using WebApi.Services;
 
 [assembly: FunctionsStartup(typeof(Sg_functions.Startup))]
 namespace Sg_functions
@@ -25,6 +25,7 @@ namespace Sg_functions
              });
             builder.Services.AddTransient<SGContext>();
             builder.Services.AddTransient<PlantCareHelper>();
+            builder.Services.AddTransient<EmailHelper>();
 
         }
     }

@@ -1,5 +1,6 @@
 ﻿using Core.DataObjects.EFObjects;
 using System;
+using System.Collections.Generic;
 
 namespace Sg_functions.Models
 {
@@ -13,7 +14,7 @@ namespace Sg_functions.Models
         public DateTime MeasuredAtTime { get; set; }
         public string PlantName { get; set; }
         public string PlantSpecies { get; set; }
-        public PlantCareWarningModel Warnings { get; set; }
+        public List<PlantCareWarningModel> Warnings { get; set; }
 
         public static MeasurementModel FromMeasurement(Measurement measurement)
         {
