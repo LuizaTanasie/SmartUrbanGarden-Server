@@ -28,8 +28,11 @@ namespace Sg_functions.Functions
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req)
         {
-            Guid deviceId = Guid.Parse(req.Query["DeviceId"]);
-
+            var success = Guid.TryParse(req.Query["DeviceId"], out Guid deviceId);
+            if (!success)
+            {
+                return new BadRequestObjectResult("Invalid device ID.");
+            }
             var measurement = context.Measurements
                 .Include(m => m.Device)
                 .OrderByDescending(m => m.MeasuredAtTime)

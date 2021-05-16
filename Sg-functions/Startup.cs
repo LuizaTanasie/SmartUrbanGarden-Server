@@ -26,6 +26,7 @@ namespace Sg_functions
             builder.Services.AddTransient<SGContext>();
             builder.Services.AddTransient<PlantCareHelper>();
             builder.Services.AddTransient<EmailHelper>();
+            builder.Services.AddTransient<AnalyticsHelper>();
 
         }
     }

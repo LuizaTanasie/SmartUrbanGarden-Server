@@ -143,7 +143,7 @@ namespace Sg_functions.Helpers
                     }
                 case (int)MeasurementIdealAmounts.Moderate:
                     {
-                        if (soilMoisture < 30)
+                        if (soilMoisture < 60)
                         {
                             warning = soilMoistureTooLow;
                         }
@@ -151,7 +151,7 @@ namespace Sg_functions.Helpers
                     }
                 case (int)MeasurementIdealAmounts.High:
                     {
-                        if (soilMoisture < 50)
+                        if (soilMoisture < 70)
                         {
                             warning = soilMoistureTooLow;
                         }
